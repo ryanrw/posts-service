@@ -1,5 +1,6 @@
 // entry of all type definition.
 import root from './root'
-import hello from './helloworld'
+import post from './post'
+import status from './status'
 
-export const typeDefs = [root, hello]
+export const typeDefs = [root, post, status]
