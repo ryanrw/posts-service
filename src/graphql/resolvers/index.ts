@@ -1,5 +1,5 @@
 // entry of all resolver here
 import _ from 'lodash'
-import helloworld from './helloworld'
+import addPost from './addPost'
 
-export const resolvers = _.merge({}, helloworld)
+export const resolvers = _.merge({}, addPost)
