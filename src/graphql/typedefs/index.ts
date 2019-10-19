@@ -3,7 +3,7 @@ import root from './root'
 import addPost from './addPost'
 import status from './status'
 import post from './post'
-import getPost from './getPost'
+import find from './find'
 import getPosts from './getPosts'
 
-export const typeDefs = [root, addPost, status, post, getPost, getPosts]
+export const typeDefs = [root, addPost, status, post, getPosts, find]

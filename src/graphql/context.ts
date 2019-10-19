@@ -15,6 +15,6 @@ export const context = ({ req }: { req: Request }) => {
       pool: pool,
     }
   } catch (error) {
-    return {}
+    return { pool }
   }
 }

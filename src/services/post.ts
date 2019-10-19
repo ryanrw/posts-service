@@ -1,7 +1,7 @@
-import { Pool, QueryConfig } from 'pg'
+import { Pool, QueryConfig, QueryResult } from 'pg'
 
 import { Status } from '../types/status'
-import { UserInput } from '../types/post'
+import { UserInput, DBResult, MappedResult } from '../types/post'
 import { UserContext } from '../types/context'
 
 export class PostService {
@@ -10,17 +10,34 @@ export class PostService {
   userid: string
   pool: Pool
 
-  constructor(userInput?: UserInput, context?: UserContext) {
-    this.title = userInput.title
-    this.content = userInput.content
-    this.userid = context.userid
-    this.pool = context.pool
+  constructor(user: UserContext)
+  constructor(user: UserContext | UserInput)
+  constructor(user: any) {
+    this.title = user.title || null
+    this.content = user.content || null
+    this.userid = user.userid
+    this.pool = user.pool
   }
 
   /**
-   * add post to database when userInput is not null
+   * Map the result from database to which exactly same
+   * as GraphQL type defination
+   * @param data result from sql query
+   * @return {MappedResult[]} mapped result
    */
-  async publish() {
+  resultMapper(data: QueryResult): MappedResult[] {
+    return data.rows.map(
+      ({ username, title, content }: DBResult): MappedResult => {
+        return {
+          author: username,
+          title,
+          content,
+        }
+      }
+    )
+  }
+
+  async publish(): Promise<Status> {
     if (!this.title || !this.content) {
       return {
         isSuccess: false,
@@ -39,5 +56,31 @@ export class PostService {
       isSuccess: true,
       description: `Query successfully`,
     } as Status
+  }
+
+  async getAll(): Promise<MappedResult[]> {
+    const query: QueryConfig = {
+      text: `SELECT users.username, posts.title, posts."content" FROM posts
+      LEFT JOIN users
+      ON posts.authorid = users.userid`,
+    }
+
+    const result = await this.pool.query(query)
+
+    return this.resultMapper(result)
+  }
+
+  async find(postid: Number): Promise<MappedResult> {
+    const query: QueryConfig = {
+      text: `SELECT users.username, posts.title, posts."content" FROM posts
+      LEFT JOIN users
+      ON posts.authorid = users.userid
+      WHERE posts.postid = $1`,
+      values: [postid],
+    }
+
+    const result = await this.pool.query(query)
+
+    return this.resultMapper(result).pop()
   }
 }

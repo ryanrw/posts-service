@@ -4,14 +4,17 @@ import { UserContext } from '../../types/context'
 
 export default {
   Mutation: {
-    addPost: (_parents: any, args: UserInput, context: UserContext) => {
+    addPost: async (_parents: any, args: UserInput, context: UserContext) => {
       try {
         if (!context.userid) {
           throw new Error('not login')
         }
 
-        const post = new PostService(args, context)
-        const result = post.publish()
+        const post = new PostService({
+          ...args,
+          ...context,
+        })
+        const result = await post.publish()
         return result
       } catch (error) {
         return {
