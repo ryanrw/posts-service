@@ -10,12 +10,14 @@ export interface UserFindPostInput {
 }
 
 export interface DBResult {
+  postid: Number
   username: string
   title: string
   content: string
 }
 
 export interface MappedResult {
+  postid: Number
   author: string
   title: string
   content: string

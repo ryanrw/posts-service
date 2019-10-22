@@ -27,8 +27,9 @@ export class PostService {
    */
   resultMapper(data: QueryResult): MappedResult[] {
     return data.rows.map(
-      ({ username, title, content }: DBResult): MappedResult => {
+      ({ username, title, content, postid }: DBResult): MappedResult => {
         return {
+          postid,
           author: username,
           title,
           content,
@@ -60,7 +61,7 @@ export class PostService {
 
   async getAll(): Promise<MappedResult[]> {
     const query: QueryConfig = {
-      text: `SELECT users.username, posts.title, posts."content" FROM posts
+      text: `SELECT users.username, posts.title, posts."content", posts.postid FROM posts
       LEFT JOIN users
       ON posts.authorid = users.userid`,
     }
