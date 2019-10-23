@@ -1,0 +1,4 @@
+node_module/
+.prettierrc
+jsconfig.json
+dist
