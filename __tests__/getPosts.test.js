@@ -15,6 +15,7 @@ describe('Get all post service', () => {
 
     expect(result).toStrictEqual([
       {
+        postid: 2,
         author: 'ryan',
         title: 'Hello, world',
         content: 'hello world!',

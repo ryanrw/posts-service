@@ -6,6 +6,7 @@ class Pool {
       rowCount: 1,
       rows: [
         {
+          postid: 2,
           username: 'ryan',
           title: 'Hello, world',
           content: 'hello world!',

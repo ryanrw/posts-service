@@ -14,6 +14,7 @@ describe('Find post service', () => {
     const result = await mockFind(null, { postid: 1 }, mockContext)
 
     expect(result).toStrictEqual({
+      postid: 2,
       author: 'ryan',
       title: 'Hello, world',
       content: 'hello world!',
