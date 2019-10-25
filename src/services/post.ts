@@ -63,7 +63,8 @@ export class PostService {
     const query: QueryConfig = {
       text: `SELECT users.username, posts.title, posts."content", posts.postid FROM posts
       LEFT JOIN users
-      ON posts.authorid = users.userid`,
+      ON posts.authorid = users.userid
+      ORDER BY posts.postid DESC`,
     }
 
     const result = await this.pool.query(query)
